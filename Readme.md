@@ -1,7 +1,7 @@
 # Личный проект «Шесть городов (простой)»
 
 * Студент: [Konstantin Lysenko](https://up.htmlacademy.ru/nodejs-api/3/user/586823).
-* Наставник: `Неизвестно`.
+* Наставник: [Владислав Поклонский](https://htmlacademy.ru/profile/id2210683).
 
 ---
 
