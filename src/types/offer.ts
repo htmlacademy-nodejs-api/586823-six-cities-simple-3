@@ -1,5 +1,5 @@
 /* eslint-disable node/no-unsupported-features/es-syntax */
-import { benefits, CitiesNames, offerType } from '../const.js';
+import { UserType } from './user.js';
 
 type CoordinatesType = {
   latitude: number;
@@ -7,19 +7,19 @@ type CoordinatesType = {
 }
 
 export type OfferType = {
-  name: string;
+  title: string;
   description: string;
   date: Date;
-  city: CitiesNames;
+  city: string;
   preview: string;
   photos: string[];
   isPremium: boolean;
   rating: number;
-  type: offerType;
+  type: string;
   roomCount: number;
   guestCount: number;
   price: number;
-  benefits: benefits[];
+  benefits: string[];
   user: UserType;
   commentsCount: number;
   coordinates: CoordinatesType;
