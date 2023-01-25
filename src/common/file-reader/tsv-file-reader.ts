@@ -1,4 +1,3 @@
-/* eslint-disable node/no-unsupported-features/es-syntax */
 import { readFileSync } from 'fs';
 import { CitiesNames, offerType } from '../../const.js';
 import { OfferType } from '../../types/offer.js';
