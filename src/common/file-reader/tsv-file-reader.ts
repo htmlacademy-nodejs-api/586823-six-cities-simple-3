@@ -1,81 +1,34 @@
-/* eslint-disable node/no-unsupported-features/es-syntax */
-import { readFileSync } from 'fs';
-import { CitiesNames, offerType } from '../../const.js';
-import { OfferType } from '../../types/offer.js';
-import { FileReaderInterface } from './file-reader.interface.js';
+import EventEmitter from 'events';
+ import { createReadStream } from 'fs';
+ import { FileReaderInterface } from './file-reader.interface.js';
 
-const findType = (typeFromServer: string, obj: object) => {
-  let typeResult = '';
-  for (const type in obj) {
-    if (typeFromServer.toLocaleLowerCase() === type.toLocaleLowerCase()) {
-      typeResult = type;
-    }
-  }
-  return typeResult;
-};
+ export default class TSVFileReader extends EventEmitter implements FileReaderInterface {
+   constructor(public filename: string) {
+     super();
+   }
 
-const trueOrFalse = (str: string) => str !== 'false';
+   public async read():Promise<void> {
+     const stream = createReadStream(this.filename, {
+       highWaterMark: 16384, // 16KB
+       encoding: 'utf-8',
+     });
 
-export default class TSVFileReader implements FileReaderInterface {
-  private rawData = '';
+     let lineRead = '';
+     let endLinePosition = -1;
+     let importedRowCount = 0;
 
-  constructor(public filename: string) {}
+     for await (const chunk of stream) {
+       lineRead += chunk.toString();
 
-  public read(): void {
-    this.rawData = readFileSync(this.filename, { encoding: 'utf8' });
-  }
+       while ((endLinePosition = lineRead.indexOf('\n')) >= 0) {
+         const completeRow = lineRead.slice(0, endLinePosition + 1);
+         lineRead = lineRead.slice(++endLinePosition);
+         importedRowCount++;
 
-  public toArray(): OfferType[] | [] {
-    if (!this.rawData) {
-      return [];
-    }
+         this.emit('line', completeRow);
+       }
+     }
 
-    console.log();
-
-    return this.rawData.replaceAll('-', '').split('\n').filter((row) => row.trim() !== '').map((line) => line.split('\t')).map(
-      ([
-        title,
-        description,
-        createdDate,
-        city,
-        preview,
-        photos,
-        isPremium,
-        rating,
-        type,
-        roomCount,
-        guestCount,
-        price,
-        benefits,
-        name,
-        email,
-        avatar,
-        password,
-        isPro,
-        latitude,
-        longitude,
-      ]) => {
-        const isProCorrect = Boolean(isPro);
-        const latitudeCorrect = Number(latitude);
-        const longitudeCorrect = Number(longitude);
-        return {
-          title,
-          description,
-          date: new Date(createdDate),
-          city: findType(city, CitiesNames),
-          preview,
-          photos: photos.split('; '),
-          isPremium: trueOrFalse(isPremium),
-          rating: Number.parseInt(rating, 10),
-          type: findType(type, offerType),
-          roomCount: Number.parseInt(roomCount, 10),
-          guestCount: Number.parseInt(guestCount, 10),
-          price: Number.parseInt(price, 10),
-          benefits: benefits.split('; '),
-          user: { name, email, avatar, password, isPro: isProCorrect },
-          commentsCount: 0,
-          coordinates: { latitude: latitudeCorrect, longitude: longitudeCorrect },
-        };
-      });
-  }
+     this.emit('end', importedRowCount);
+   }
 }

@@ -1,0 +1,43 @@
+{
+  "title": [
+    "Квартира1 в Париже",
+    "Квартира2 в Париже",
+    "Квартира3 в Париже",
+    "Квартира4 в Париже",
+    "Квартира5 в Париже"
+  ],
+  "description": [
+    "Лучшая квартира1 в Париже, Кекс рекомендует",
+    "Лучшая квартира2 в Париже, Кекс рекомендует",
+    "Лучшая квартира3 в Париже, Кекс рекомендует",
+    "Лучшая квартира4 в Париже, Кекс рекомендует",
+    "Лучшая квартира5 в Париже, Кекс рекомендует"
+  ],
+  "date": [
+    "2023-11-13T23:00:00.000Z",
+    "2023-10-13T23:00:00.000Z",
+    "2023-01-13T23:00:00.000Z",
+    "2023-06-13T23:00:00.000Z",
+    "2023-09-13T23:00:00.000Z"
+  ],
+  "benefits": [
+    "Breakfast",
+    "Air conditioning"
+  ],
+  "user": [
+    {
+      "name": "Ivan",
+      "email": "k@ivan.com",
+      "avatar": "https://abrakadabra.fun/uploads/posts/202112/1639410253_7abrakadabrafunpchelovechkinaavu7.png",
+      "password": "123456",
+      "isPro": true
+    },
+    {
+      "name": "Victor",
+      "email": "v@vicor.com",
+      "avatar": "https://abrakadabra.fun/uploads/posts/202112/1639410253_7abrakadabrafunpchelovechkinaavu7.png",
+      "password": "654321",
+      "isPro": false
+    }
+  ]
+}
