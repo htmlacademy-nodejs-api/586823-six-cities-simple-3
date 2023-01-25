@@ -1,4 +1,4 @@
-/* eslint-disable node/no-unsupported-features/es-syntax */
+
 import { CliCommandInterface } from './cli-command.interface.js';
 import { readFileSync } from 'fs';
 import chalk from 'chalk';

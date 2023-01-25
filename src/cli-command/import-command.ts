@@ -1,24 +1,28 @@
-/* eslint-disable node/no-unsupported-features/es-syntax */
+
 import TSVFileReader from '../common/file-reader/tsv-file-reader.js';
 import { CliCommandInterface } from './cli-command.interface.js';
+import {createOffer} from '../utils.js'
 
 export default class ImportCommand implements CliCommandInterface {
   public readonly name = '--import';
-  public execute(filename: string): void {
-    // Чтение файла
-    const fileReader = new TSVFileReader(filename.trim());
+  private onLine(line: string) {
+     const offer = createOffer(line);
+     console.log(offer);
+   }
 
-    try {
-      fileReader.read();
+   private onComplete(count: number) {
+     console.log(`${count} rows imported.`);
+   }
 
-      console.log(fileReader.toArray());
-    } catch (err) {
+   public async execute(filename: string): Promise<void> {
+     const fileReader = new TSVFileReader(filename.trim());
+     fileReader.on('line', this.onLine);
+     fileReader.on('end', this.onComplete);
 
-      if (!(err instanceof Error)) {
-        throw err;
-      }
-
-      console.log(`Не удалось импортировать данные из файла по причине: «${err.message}»`);
-    }
-  }
+     try {
+       await fileReader.read();
+     } catch(err) {
+       console.log(`Can't read the file: ${err}`);
+     }
+   }
 }
