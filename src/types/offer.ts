@@ -1,7 +1,7 @@
 
 import { UserType } from './user.js';
 
-type CoordinatesType = {
+export type CoordinatesType = {
   latitude: number;
   longitude: number;
 }
