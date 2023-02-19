@@ -1,0 +1,83 @@
+openapi: '3.1.0'
+info:
+  title: API сервер для проекта «Шесть городов».
+  description: |-
+    * Список ресурсов и маршрутов сервера «Шесть городов».
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 2.0.0
+
+tags:
+  - name: users
+    description: Действия с пользователями.
+  - name: offers
+    description: Действия с предложениями по аренде.
+  - name: comments
+    description: Действия с комментариями.
+
+paths:
+  /offers/:
+    post:
+      tags:
+        - "offers"
+      summary: Добавление нового предложения по аренде
+      description: Возвращает созданное предложение
+
+    get:
+      tags:
+        - "offers"
+      summary: Получение предложений по аренде
+      description: Возвращает 60 или другое указаное клиентом количество предложений по аренде
+
+  /offers/{id}:
+    put:
+      tags:
+        - "offers"
+      summary: Редактирование предложения по аренде
+      description: Возвращает изменённое предложение
+
+    delete:
+      tags:
+        - "offers"
+      summary: Удаление предложения по аренде
+      description: Удаляет определённое предложение по аренде и ничего не возвращяет
+
+    get:
+        tags:
+          - "offers"
+        summary: Получение детальной информации про предложение по аренде
+        description: Возвращает детальную информацию про предложение по аренде
+
+  /offers/{id}/comments:
+    get:
+        tags:
+          - "comments"
+        summary: Получние комментариев для определённого прдложения по аренде
+        description: Возвращает массив из 50 или меньше последних коммнтариев
+
+    post:
+        tags:
+          - "comments"
+        summary:  Добавление комментария для определённого прдложения по аренде
+        description: Возвращает новый комментарий
+
+  /users/:
+    post:
+        tags:
+          - "users"
+        summary:  Добавление нового пользователя
+        description: Возвращает нового пользователя
+
+  /users/login:
+    post:
+        tags:
+          - "users"
+        summary:  Авторизация пользователя
+        description: Возвращает уникальный токен для клиента
+
+    get:
+        tags:
+          - "users"
+        summary:  Проверка состояния пользователя
+        description: Возвращает состояние пользователя (авторизован или нет)
