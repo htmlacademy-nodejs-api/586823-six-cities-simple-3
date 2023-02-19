@@ -65,3 +65,5 @@ export const Cities: City[] = [
     longitude: 6.776314,
   }
 ];
+
+export const DEFAULT_OFFERS_COUNT = 60;

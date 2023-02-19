@@ -1,6 +1,6 @@
-import typegoose, {defaultClasses, getModelForClass, Ref} from '@typegoose/typegoose';
-import { CoordinatesType } from '../../types/offer.js';
-import {UserEntity} from '../user/user.entity.js';
+import typegoose, {defaultClasses, getModelForClass} from '@typegoose/typegoose';
+import { CoordinatesType, OfferType } from '../../types/offer.js';
+import { UserType } from '../../types/user.js';
 
 const {prop, modelOptions} = typegoose;
 
@@ -11,7 +11,27 @@ export interface OfferEntity extends defaultClasses.Base {}
      collection: 'offers'
    }
  })
-export class OfferEntity extends defaultClasses.TimeStamps {
+export class OfferEntity extends defaultClasses.TimeStamps implements OfferType {
+  constructor(data: OfferType) {
+    super();
+
+    this.title = data.title;
+    this.description = data.description;
+    this.city = data.city;
+    this.type = data.type;
+    this.preview = data.preview;
+    this.photos = data.photos;
+    this.benefits = data.benefits;
+    this.isPremium = data.isPremium;
+    this.rating = data.rating;
+    this.roomCount = data.roomCount;
+    this.guestCount = data.guestCount;
+    this.date = data.date;
+    this.price = data.price;
+    this.user = data.user;
+    this.coordinates = data.coordinates;
+  }
+
    @prop({trim: true, required: true})
   public title!: string;
 
@@ -55,10 +75,9 @@ export class OfferEntity extends defaultClasses.TimeStamps {
    public commentsCount!: number;
 
    @prop({
-     ref: UserEntity,
      required: true
    })
-   public user!: Ref<UserEntity>;
+   public user!: UserType;
 
    @prop()
    public coordinates!: CoordinatesType;

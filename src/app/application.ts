@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { ConfigInterface } from '../common/config/config.interface.js';
-import { DatabasInterface } from '../common/database-client/database.interface.js';
+import { DatabaseInterface } from '../common/database-client/database.interface.js';
 import { LoggerInterface } from '../common/logger/logger.interface.js';
 import { Component } from '../types/component.types.js';
 import { getURI } from '../utils.js';
@@ -9,7 +9,7 @@ import { getURI } from '../utils.js';
 export default class Application {
   constructor(@inject(Component.LoggerInterface) private logger: LoggerInterface,
     @inject(Component.ConfigInterface) private config: ConfigInterface,
-  @inject(Component.DatabaseInterface) private db: DatabasInterface) { }
+  @inject(Component.DatabaseInterface) private db: DatabaseInterface) { }
 
   public async init() {
     this.logger.info('Application has been initialized');
