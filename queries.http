@@ -2,3 +2,65 @@
  GET http://localhost:3123/api HTTP/1.1
 
  ###
+
+##
+
+ # Пользователи
+ ## Создание нового пользователя
+
+ POST http://localhost:3123/users/ HTTP/1.1
+ Content-Type: application/json
+
+ {
+    "name": "Jack",
+    "email": "torans@overlook.net",
+    "avatar": "torrance.png",
+    "password": "shining",
+    "isPro": true,
+ }
+
+
+ ## Авторизация пользователя
+
+ POST  http://localhost:3123/users/ HTTP/1.1
+ Content-Type: application/json
+
+ {
+    "email": "torans@overlook.net",
+    "password": "shining",
+ }
+
+ ###
+
+##
+
+ # Предложения по ареде
+ ## Создание нового предложения по аренде
+
+ POST http://localhost:3123/users/ HTTP/1.1
+ Content-Type: application/json
+
+ {
+  "title": "title-text",
+  "description": "description-text",
+  "date": "Tue Feb 21 2023 22:16:23 GMT+0100 (CET)",
+  "city": "Paris",
+  "preview": "torrance.png",
+  "photos": ["torrance1.png", "torrance2.png", "torrance3.png", "torrance4.png"],
+  "isPremium": true,
+  "type": "Apartament",
+  "roomCount": 4,
+  "guestCount": 8,
+  "price": 10000,
+  "benefits": ["1", "2", "3", "4"],
+  "user": {
+    "name": "Jack",
+    "email": "torans@overlook.net",
+    "avatar": "torrance.png",
+    "password": "shining",
+    "isPro": true,
+  },
+  "commentsCount": 5,
+ }
+
+ ###
