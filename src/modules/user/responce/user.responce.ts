@@ -11,7 +11,7 @@ export default class UserResponse {
   public avatar!: string;
 
   @Expose()
-  public password!: string;
+  public _id!: string;
 
   @Expose()
   public isPro!: boolean;
