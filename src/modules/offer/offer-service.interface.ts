@@ -8,6 +8,6 @@ export interface OfferServiceInterface {
   findById(offerId: string): Promise<DocumentType<OfferEntity> | null>;
   find(limit?: number): Promise<DocumentType<OfferEntity>[]>;
   updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null>;
-  deleteById(offerId: string): void;
+  deleteById(offerId: string): Promise<DocumentType<OfferEntity> | null>;
   incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null>;
 }

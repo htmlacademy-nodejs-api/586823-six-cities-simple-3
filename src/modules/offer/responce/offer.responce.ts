@@ -1,10 +1,10 @@
-import {Expose} from 'class-transformer';
+import {Expose, Type} from 'class-transformer';
 import { CoordinatesType } from '../../../types/offer.js';
-import { UserType } from '../../../types/user.js';
+import UserResponse from '../../user/responce/user.responce.js';
 
 export default class OfferResponse {
   @Expose()
-  public id!: string;
+  public _id!: string;
 
   @Expose()
   public title!: string;
@@ -45,8 +45,9 @@ export default class OfferResponse {
   @Expose()
   public benefits!: string[];
 
-  @Expose()
-  public user!: UserType;
+  @Expose({ name: 'userId'})
+  @Type(() => UserResponse)
+  public user!: UserResponse;
 
   @Expose()
   public commentsCount!: number;
