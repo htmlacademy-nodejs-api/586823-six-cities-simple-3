@@ -11,7 +11,7 @@ export type ConfigSchema = {
   DB_PASSWORD: string;
   DB_PORT: number;
   DB_NAME: string;
-  UPLOAD_DIRECTORY: string
+  UPLOAD_DIRECTORY: string;
 }
 
 export const configSchema = convict<ConfigSchema>({
