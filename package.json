@@ -16,7 +16,8 @@
     "start:dev": "nodemon",
     "clean": "rimraf dist",
     "ts": "ts-node",
-    "server": "json-server ./mocks/mock-server-data.json --port 3123"
+    "server": "json-server ./mocks/mock-server-data.json --port 3123",
+    "cli": "npm run build && node ./dist/app/application.js"
   },
   "devDependencies": {
     "@types/convict": "6.1.1",
