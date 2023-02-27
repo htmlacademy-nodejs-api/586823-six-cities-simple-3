@@ -41,11 +41,10 @@ export default class OfferGenerator implements OfferGeneratorInterface {
     const name = user.name;
     const email = user.email;
     const avatar = user.avatar;
-    const password = user.password;
     const isPro = user.isPro;
 
     return [
-      title, description, date, city, preview, photos, isPremium, rating, type, roomCount, guestCount, price, benefits, name, email, avatar, password, isPro, commentsCount, latitude, longitude
+      title, description, date, city, preview, photos, isPremium, rating, type, roomCount, guestCount, price, benefits, name, email, avatar, isPro, commentsCount, latitude, longitude
     ].join('\t');
   }
 }
