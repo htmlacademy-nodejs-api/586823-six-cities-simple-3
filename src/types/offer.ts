@@ -1,4 +1,5 @@
 
+import { Benefits, CitiesNames, RoomType } from '../const.js';
 import { UserType } from './user.js';
 
 export type CoordinatesType = {
@@ -10,17 +11,15 @@ export type OfferType = {
   title: string;
   description: string;
   date: Date;
-  city: string;
+  city: CitiesNames;
   preview: string;
   photos: string[];
   isPremium: boolean;
-  rating: number;
-  type: string;
+  type: RoomType;
   roomCount: number;
   guestCount: number;
   price: number;
-  benefits: string[];
+  benefits: Benefits[];
   user: UserType;
-  commentsCount: number;
   coordinates: CoordinatesType;
 }
