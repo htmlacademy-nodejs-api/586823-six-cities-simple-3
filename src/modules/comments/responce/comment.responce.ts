@@ -1,8 +1,10 @@
 import {Expose, Type} from 'class-transformer';
-import { UserType } from '../../../types/user.js';
 import UserResponse from '../../user/responce/user.responce.js';
 
 export default class CommentResponse {
+  @Expose()
+  public id!: string;
+
   @Expose()
   public commentText!: string;
 
@@ -14,5 +16,5 @@ export default class CommentResponse {
 
   @Expose({ name: 'userId'})
   @Type(() => UserResponse)
-  public author!: UserType;
+  public author!: UserResponse;
 }

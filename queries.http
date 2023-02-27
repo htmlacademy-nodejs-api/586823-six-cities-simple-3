@@ -9,8 +9,8 @@ POST http://localhost:3123/users/ HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Jack",
-  "email": "torans@overlook.net",
+  "name": "Jack1",
+  "email": "torans1@overlook.net",
   "avatar": "torrance.png",
   "password": "shining",
   "isPro": true
@@ -36,7 +36,7 @@ Content-Type: application/json
 
 {
 "title": "title-text",
-"description": "description-text",
+"description": "description-text description-text",
 "date": "2022-05-12T11:56:37.573Z",
 "city": "Paris",
 "preview": "torrance.png",
@@ -46,9 +46,13 @@ Content-Type: application/json
 "roomCount": 4,
 "guestCount": 8,
 "price": 10000,
+"rating": 5,
 "benefits": ["1", "2", "3", "4"],
 "userId": "63f636b9fef435bd8ae18b7c",
-"commentsCount": 5
+"coordinates": {
+  "latitude": 5.5,
+  "longitude": 5.5
+}
 }
 
 ###
@@ -62,14 +66,14 @@ GET http://localhost:3123/offers/ HTTP/1.1
 
 ## Получение определённого предложения по аренде
 
-GET http://localhost:3123/offers/63f674d22e74310007ba3c44 HTTP/1.1
+GET http://localhost:3123/offers/63fc8b025e9f1dc2af3d8d77 HTTP/1.1
 
 ###
 
 
 ## Изменение определённого предложения по аренде
 
-PATCH http://localhost:3123/offers/63f674d22e74310007ba3c44 HTTP/1.1
+PATCH http://localhost:3123/offers/63fc87d55ca36b8e6996e0e0 HTTP/1.1
 Content-Type: application/json
 
  {
@@ -82,14 +86,14 @@ Content-Type: application/json
 
 ## Удаление определённого предложения по аренде
 
-DELETE http://localhost:3123/offers/63f674d22e74310007ba3c44 HTTP/1.1
+DELETE http://localhost:3123/offers/63fc8d91ebe983b2d4c45f65 HTTP/1.1
 
 ###
 
 ## Список комментариев к объявлению
-GET http://localhost:3123/offers/63f674d2fef435bd8ae18b80/comments HTTP/1.1
+GET http://localhost:3123/offers/63fc8b025e9f1dc2af3d8d77/comments HTTP/1.1
 
- ###
+###
 
 ## Создать комментарий
 
@@ -97,11 +101,11 @@ POST http://localhost:3123/comments HTTP/1.1
  Content-Type: application/json
 
  {
-   "commentText": "Как обстоят дела с коробками? Фирменная упаковка сохранена?",
-   "offerId": "628a27d729c45f2bf9f6806a",
-   "userId": "628a27d729c45f2bf9f67ff2",
+   "commentText": "Как с коробками? Фирменная упаковка сохранена?",
+   "offerId": "63fc8b025e9f1dc2af3d8d77",
+   "userId": "63f636b9fef435bd8ae18b7c",
    "date": "2022-05-12T11:56:37.573Z",
-   "rating": "5"
+   "rating": 4
  }
 
  ###

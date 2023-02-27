@@ -7,7 +7,7 @@ import { LoggerInterface } from '../../common/logger/logger.interface.js';
 import { Component } from '../../types/component.types.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
 import { fillDTO } from '../../utils.js';
-import CreatOfferDto from './dto/create-offer.dto.js';
+import CreateOfferDto from './dto/create-offer.dto.js';
 import { OfferServiceInterface } from './offer-service.interface.js';
 import OfferResponse from './responce/offer.responce.js';
 import * as core from 'express-serve-static-core';
@@ -37,7 +37,7 @@ export default class OfferController extends Controller {
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreatOfferDto)]
+      middlewares: [new ValidateDtoMiddleware(CreateOfferDto)]
     });
     this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
     this.addRoute({
@@ -67,10 +67,12 @@ export default class OfferController extends Controller {
   }
 
   public async create(
-    {body}: Request<Record<string, unknown>, Record<string, unknown>, CreatOfferDto>,
+    req: Request<Record<string, unknown>, Record<string, unknown>, CreateOfferDto>,
     res: Response
   ): Promise<void> {
+    const {body} = req;
     const result = await this.offerService.create(body);
+
     const offer = await this.offerService.findById(result.id);
     this.created(res, fillDTO(OfferResponse, offer));
   }
@@ -124,15 +126,10 @@ export default class OfferController extends Controller {
     const { offerId } = params;
     const offer = await this.offerService.deleteById(offerId);
 
-    if (!offer) {
-      throw new HttpError(
-        StatusCodes.NOT_FOUND,
-        `Offer with id ${offerId} not found.`,
-        'OfferController'
-      );
-    }
 
-    await this.commentService.deleteByOfferId(offerId);
+    if (await this.commentService.findByOfferId(offerId)) {
+      await this.commentService.deleteByOfferId(offerId);
+    }
 
     this.noContent(res, offer);
   }

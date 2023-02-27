@@ -4,7 +4,7 @@ import UserResponse from '../../user/responce/user.responce.js';
 
 export default class OfferResponse {
   @Expose()
-  public _id!: string;
+  public id!: string;
 
   @Expose()
   public title!: string;

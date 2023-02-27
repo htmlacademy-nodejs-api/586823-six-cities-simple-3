@@ -1,7 +1,7 @@
 import { CoordinatesType } from '../../../types/offer.js';
-import {IsArray, IsObject, IsBoolean, IsDateString, IsInt, IsMongoId, Max, MaxLength, Min, MinLength} from 'class-validator';
+import {IsArray, IsObject, IsBoolean, IsDateString, IsInt, Max, MaxLength, Min, MinLength} from 'class-validator';
 
-export default class CreatOfferDto {
+export default class CreateOfferDto {
   @MinLength(10, {message: 'Minimum title length must be 10'})
   @MaxLength(100, {message: 'Maximum title length must be 100'})
   public title!: string;
@@ -41,10 +41,6 @@ export default class CreatOfferDto {
   @Max(200000, {message: 'Maximum price is 200000'})
   public price!: number;
 
-  @IsInt({message: 'Comments must be an integer'})
-  public commentsCount!: number;
-
-  @IsMongoId({message: 'userId field must be valid an id'})
   public userId!: string;
 
   @IsObject({message: 'coordinates must be valid an object'})

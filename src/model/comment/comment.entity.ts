@@ -1,6 +1,6 @@
-import {commentType} from '../../types/comment.js';
-import typegoose, {getModelForClass, defaultClasses} from '@typegoose/typegoose';
-import { UserType } from '../../types/user.js';
+import typegoose, {getModelForClass, defaultClasses, Ref} from '@typegoose/typegoose';
+import { OfferEntity } from '../offer/offer.entity.js';
+import { UserEntity } from '../user/user.entity.js';
 
 
 const {prop, modelOptions} = typegoose;
@@ -11,21 +11,7 @@ export interface CommentEntity extends defaultClasses.Base {}
     collection: 'comments'
   }
 })
-export class CommentEntity extends defaultClasses.TimeStamps implements commentType {
-
-  constructor(offerId: number, data: commentType) {
-    super();
-
-    this.offerId = offerId;
-    this.commentText = data.commentText;
-    this.date = data.date;
-    this.rating = data.rating;
-    this.author = data.author;
-  }
-
-  @prop()
-  public offerId!: number;
-
+export class CommentEntity extends defaultClasses.TimeStamps {
   @prop({ unique: true })
   public commentText!: string;
 
@@ -35,8 +21,17 @@ export class CommentEntity extends defaultClasses.TimeStamps implements commentT
   @prop({ unique: true })
   public rating!: number;
 
-  @prop({required: true})
-  public author!: UserType;
+  @prop({
+    ref: OfferEntity,
+    required: true
+  })
+  public offerId!: Ref<OfferEntity>;
+
+  @prop({
+    ref: UserEntity,
+    required: true,
+  })
+  public userId!: Ref<UserEntity>;
 
 }
 
