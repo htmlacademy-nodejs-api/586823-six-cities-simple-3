@@ -24,7 +24,7 @@ export default class UserController extends Controller {
     super(logger);
     this.logger.info('Register routes for UserController…');
 
-    this.addRoute({ path: '/login', method: HttpMethod.Get, handler: this.auth });
+    this.addRoute({ path: '/login', method: HttpMethod.Get, handler: this.create });
     this.addRoute({
       path: '/login',
       method: HttpMethod.Post,
@@ -75,14 +75,4 @@ export default class UserController extends Controller {
     );
   }
 
-  public async auth(
-    _req: Request,
-    _res: Response,
-  ): Promise<void> {
-    throw new HttpError(
-      StatusCodes.NOT_IMPLEMENTED,
-      'Not implemented',
-      'UserController',
-    );
-  }
 }
