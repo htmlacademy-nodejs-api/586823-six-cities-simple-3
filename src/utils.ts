@@ -4,21 +4,22 @@ import { ClassConstructor, plainToInstance } from 'class-transformer';
 
 const trueOrFalse = (str: string) => str !== 'false';
 
-export const createOffer = (rawData: string): OfferType[] => rawData.split('\n').filter((row) => row.trim() !== '').map((line) => line.split('\t')).map(
-  ([
+export const createOffer = (rawData: string): OfferType => {
+  const tokens = rawData.replace('\n', '').split('\t');
+  const [
     title,
     description,
     createdDate,
     city,
     preview,
-    photos,
+    photosData,
     isPremium,
     rating,
     type,
     roomCount,
     guestCount,
     price,
-    benefits,
+    benefitsData,
     name,
     email,
     avatar,
@@ -26,31 +27,30 @@ export const createOffer = (rawData: string): OfferType[] => rawData.split('\n')
     isPro,
     latitude,
     longitude,
-  ]) => {
-    const isProCorrect = Boolean(isPro);
-    const latitudeCorrect = Number(latitude);
-    const longitudeCorrect = Number(longitude);
-    console.log(createdDate);
+  ] = tokens;
+  const isProCorrect = Boolean(isPro);
+  const latitudeCorrect = Number(latitude);
+  const longitudeCorrect = Number(longitude);
 
-    return {
-      title,
-      description,
-      date: new Date(createdDate),
-      city,
-      preview,
-      photos: photos.split('; '),
-      isPremium: trueOrFalse(isPremium),
-      rating: Number.parseInt(rating, 10),
-      type,
-      roomCount: Number.parseInt(roomCount, 10),
-      guestCount: Number.parseInt(guestCount, 10),
-      price: Number.parseInt(price, 10),
-      benefits: benefits.split('; '),
-      user: { name, email, avatar, password, isPro: isProCorrect },
-      commentsCount: 0,
-      coordinates: { latitude: latitudeCorrect, longitude: longitudeCorrect },
-    };
-  });
+  return {
+    title,
+    description,
+    date: new Date(createdDate),
+    city,
+    preview,
+    photos: photosData.split('; '),
+    isPremium: trueOrFalse(isPremium),
+    rating: Number.parseInt(rating, 10),
+    type,
+    roomCount: Number.parseInt(roomCount, 10),
+    guestCount: Number.parseInt(guestCount, 10),
+    price: Number.parseInt(price, 10),
+    benefits: benefitsData.split('; '),
+    user: { name, email, avatar, password, isPro: isProCorrect },
+    commentsCount: 0,
+    coordinates: { latitude: latitudeCorrect, longitude: longitudeCorrect },
+  } as OfferType;
+};
 
 export const getURI = (
   username: string,

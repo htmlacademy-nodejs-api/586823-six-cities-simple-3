@@ -11,14 +11,20 @@ import {OfferModel} from '../model/offer/offer.entity.js';
 import {OfferType} from '../types/offer.js';
 import {LoggerInterface} from '../common/logger/logger.interface.js';
 import {DatabaseInterface} from '../common/database-client/database.interface.js';
+import UserService from '../modules/user/user.service.js';
+import { UserModel } from '../model/user/user.entity.js';
+import { UserServiceInterface } from '../modules/user/user-service.interface.js';
 
 const DEFAULT_DB_PORT = 27017;
+const DEFAULT_USER_PASSWORD = '123456';
 
 export default class ImportCommand implements CliCommandInterface {
   public readonly name = '--import';
+  private userService!: UserServiceInterface;
   private offerService!: OfferServiceInterface;
   private databaseService!: DatabaseInterface;
   private logger: LoggerInterface;
+  private salt!: string;
 
   constructor() {
     this.onLine = this.onLine.bind(this);
@@ -26,19 +32,32 @@ export default class ImportCommand implements CliCommandInterface {
 
     this.logger = new ConsoleLoggerService();
     this.offerService = new OfferService(this.logger, OfferModel);
+    this.userService = new UserService(this.logger, UserModel);
     this.databaseService = new DatabaseService(this.logger);
   }
 
   private async saveOffer(offer: OfferType) {
+    const user = await this.userService.findOrCreate({
+      ...offer.user,
+      password: DEFAULT_USER_PASSWORD
+    }, this.salt);
+
     await this.offerService.create({
-      ...offer
+      ...offer,
+      userId: user.id,
     });
   }
 
   private async onLine(line: string, resolve: () => void) {
-    const offer = createOffer(line)[0];
-    await this.saveOffer(offer);
-    resolve();
+
+    if (!Number.isFinite(line)) {
+      console.log(line);
+      const offer = createOffer(line);
+      await this.saveOffer(offer);
+      resolve();
+    }
+
+
   }
 
   private onComplete(count: number) {
@@ -46,8 +65,9 @@ export default class ImportCommand implements CliCommandInterface {
     this.databaseService.disconnect();
   }
 
-  public async execute(filename: string, login: string, password: string, host: string, dbname: string): Promise<void> {
+  public async execute(filename: string, login: string, password: string, host: string, dbname: string, salt: string): Promise<void> {
     const uri = getURI(login, password, host, DEFAULT_DB_PORT, dbname);
+    this.salt = salt;
 
     await this.databaseService.connect(uri);
 
