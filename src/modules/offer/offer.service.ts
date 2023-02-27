@@ -24,10 +24,15 @@ export default class OfferService implements OfferServiceInterface {
       .exec();
   }
 
+  public async exists(documentId: string): Promise<boolean> {
+    return (await this.offerModel
+      .exists({_id: documentId})) !== null;
+  }
+
   public updateById(offerId: string, dto: updateOfferDto): Promise<DocumentType<OfferEntity, types.BeAnObject> | null> {
     return this.offerModel
       .findByIdAndUpdate(offerId, dto, {new: true})
-      .populate(['userId', 'categories'])
+      .populate(['userId'])
       .exec();
   }
 
