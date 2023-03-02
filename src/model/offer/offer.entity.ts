@@ -1,4 +1,5 @@
 import typegoose, {defaultClasses, getModelForClass, Ref} from '@typegoose/typegoose';
+import { Benefits, CitiesNames } from '../../const.js';
 import { CoordinatesType} from '../../types/offer.js';
 import { UserEntity } from '../user/user.entity.js';
 
@@ -19,8 +20,11 @@ export class OfferEntity extends defaultClasses.TimeStamps {
    @prop({trim: true})
    public description!: string;
 
-  @prop()
-   public city!: string;
+  @prop({
+    type: () => String,
+    enum: CitiesNames
+  })
+   public city!: CitiesNames;
 
   @prop({ required: true})
   public type!: string;
@@ -31,8 +35,11 @@ export class OfferEntity extends defaultClasses.TimeStamps {
    @prop()
    public photos!: string[];
 
-   @prop()
-   public benefits!: string[];
+   @prop({
+     type: () => String,
+     enum: Benefits
+   })
+   public benefits!: Benefits[];
 
    @prop()
    public isPremium!: boolean;

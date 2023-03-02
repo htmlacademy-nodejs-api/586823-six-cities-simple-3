@@ -10,11 +10,13 @@ import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.mid
 import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-objectid.middleware.js';
 import { Component } from '../../types/component.types.js';
 import { HttpMethod } from '../../types/http-method.enum.js';
-import { fillDTO } from '../../utils.js';
+import { createJWT, fillDTO } from '../../utils.js';
 import CreateUserDto from './dto/create-user.dto.js';
 import LoginUserDto from './dto/login-user.dto.js';
+import LoggedUserResponse from './responce/logged-user.responce.js';
 import UserResponse from './responce/user.responce.js';
 import { UserServiceInterface } from './user-service.interface.js';
+import { JWT_ALGORITM } from './user.constants.js';
 
 @injectable()
 export default class UserController extends Controller {
@@ -26,7 +28,7 @@ export default class UserController extends Controller {
     super(logger);
     this.logger.info('Register routes for UserController…');
 
-    this.addRoute({ path: '/login', method: HttpMethod.Get, handler: this.create });
+    this.addRoute({ path: '/login', method: HttpMethod.Get, handler: this.checkAuthenticate });
     this.addRoute({
       path: '/login',
       method: HttpMethod.Post,
@@ -69,21 +71,35 @@ export default class UserController extends Controller {
 
   public async login(
     {body}: Request<Record<string, unknown>, Record<string, unknown>, LoginUserDto>,
-    _res: Response,
+    res: Response,
   ): Promise<void> {
-    const existsUser = await this.userService.findByEmail(body.email);
-    if (!existsUser) {
+    const user = await this.userService.verifyUser(body, this.configService.get('SALT'));
+
+    if (!user) {
       throw new HttpError(
         StatusCodes.UNAUTHORIZED,
-        `User with email ${body.email} not found.`,
+        'Unauthorized',
         'UserController',
       );
     }
-    throw new HttpError(
-      StatusCodes.NOT_IMPLEMENTED,
-      'Not implemented',
-      'UserController',
+    const token = await createJWT(
+      JWT_ALGORITM,
+      this.configService.get('JWT_SECRET'),
+      { email: user.email, id: user.id}
     );
+
+    this.ok(res, fillDTO(LoggedUserResponse, {email: user.email, token}));
+  }
+
+
+  public async checkAuthenticate(req: Request, res: Response) {
+    const user = await this.userService.findByEmail(req.user.email);
+
+    // Можно добавить проверку, что `findByEmail` действительно
+    // находит пользователя в базе. Если пользователи не удаляются,
+    // проверки можно избежать.
+
+    this.ok(res, fillDTO(LoggedUserResponse, user));
   }
 
   public async uploadAvatar(req: Request, res: Response) {

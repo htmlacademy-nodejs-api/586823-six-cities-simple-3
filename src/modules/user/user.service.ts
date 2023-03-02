@@ -7,6 +7,7 @@ import {LoggerInterface} from '../../common/logger/logger.interface.js';
 import {Component} from '../../types/component.types.js';
 import { inject, injectable } from 'inversify';
 import { types } from '@typegoose/typegoose';
+import LoginUserDto from './dto/login-user.dto.js';
 
  @injectable()
 export default class UserService implements UserServiceInterface {
@@ -37,5 +38,19 @@ export default class UserService implements UserServiceInterface {
     this.logger.info(`New user created: ${user.email}`);
 
     return result;
+  }
+
+  public async verifyUser(dto: LoginUserDto, salt: string): Promise<DocumentType<UserEntity> | null> {
+    const user = await this.findByEmail(dto.email);
+
+    if (! user) {
+      return null;
+    }
+
+    if (user.verifyPassword(dto.password, salt)) {
+      return user;
+    }
+
+    return null;
   }
 }

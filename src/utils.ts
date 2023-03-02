@@ -1,10 +1,12 @@
 import { OfferType } from './types/offer.js';
 import crypto from 'crypto';
 import { ClassConstructor, plainToInstance } from 'class-transformer';
+import { Benefits, CitiesNames, RoomType } from './const.js';
+import * as jose from 'jose';
 
 const trueOrFalse = (str: string) => str !== 'false';
 
-export const createOffer = (rawData: string): OfferType => {
+export const createOffer = (rawData: string) => {
   const tokens = rawData.replace('\n', '').split('\t');
   const [
     title,
@@ -14,7 +16,6 @@ export const createOffer = (rawData: string): OfferType => {
     preview,
     photosData,
     isPremium,
-    rating,
     type,
     roomCount,
     guestCount,
@@ -36,18 +37,16 @@ export const createOffer = (rawData: string): OfferType => {
     title,
     description,
     date: new Date(createdDate),
-    city,
+    city: CitiesNames[city as 'Paris' | 'Cologne' | 'Brussels' | 'Amsterdam' | 'Hamburg' | 'Dusseldorf'],
     preview,
     photos: photosData.split('; '),
     isPremium: trueOrFalse(isPremium),
-    rating: Number.parseInt(rating, 10),
-    type,
+    type: RoomType[type as 'Apartment' | 'House' | 'Room' | 'Hotels'],
     roomCount: Number.parseInt(roomCount, 10),
     guestCount: Number.parseInt(guestCount, 10),
     price: Number.parseInt(price, 10),
-    benefits: benefitsData.split('; '),
+    benefits: benefitsData.split('; ') as Benefits[],
     user: { name, email, avatar, password, isPro: isProCorrect },
-    commentsCount: 0,
     coordinates: { latitude: latitudeCorrect, longitude: longitudeCorrect },
   } as OfferType;
 };
@@ -71,3 +70,10 @@ export const createErrorObject = (message: string) => ({
 
 export const fillDTO = <T, V>(someDto: ClassConstructor<T>, plainObject: V) =>
   plainToInstance(someDto, plainObject, {excludeExtraneousValues: true});
+
+export const createJWT = async (algoritm: string, jwtSecret: string, payload: object): Promise<string> =>
+  new jose.SignJWT({...payload})
+    .setProtectedHeader({ alg: algoritm})
+    .setIssuedAt()
+    .setExpirationTime('2d')
+    .sign(crypto.createSecretKey(jwtSecret, 'utf-8'));

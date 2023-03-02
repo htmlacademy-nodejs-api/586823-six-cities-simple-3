@@ -7,6 +7,7 @@ import { getURI } from '../utils.js';
 import express, {Express} from 'express';
 import { ExceptionFilterInterface } from '../common/errors/exeption-filter.interface.js';
 import { ControllerInterface } from '../common/controller/controller.interface.js';
+import { AuthenticateMiddleware } from '../common/middlewares/authenticate.middleware.js';
 
 @injectable()
 export default class Application {
@@ -28,6 +29,9 @@ export default class Application {
       express.static(this.config.get('UPLOAD_DIRECTORY'))
     );
     this.expressApp.use(express.json());
+
+    const authenticateMiddleware = new AuthenticateMiddleware(this.config.get('JWT_SECRET'));
+    this.expressApp.use(authenticateMiddleware.execute.bind(authenticateMiddleware));
   }
 
   public initRoutes() {
