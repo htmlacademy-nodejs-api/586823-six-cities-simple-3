@@ -23,15 +23,22 @@ POST http://localhost:3123/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "torans@overlook.net",
+  "email": "torans1@overlook.net",
   "password": "shining"
 }
+###
+
+## Проверка токена пользователя
+GET http://localhost:3123/users/login HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczFAb3Zlcmxvb2submV0IiwiaWQiOiI2NDAwODVlYWI5OGJmYTY1ZDY2Y2RlNTQiLCJpYXQiOjE2Nzc3NTk2NzAsImV4cCI6MTY3NzkzMjQ3MH0.HCAvUZgtI61A1AdqIiZyrbXpbJoJBGziwH35T3FI014
+
 ###
 
 # Предложения по ареде
 ## Создание нового предложения по аренде
 
 POST http://localhost:3123/offers/ HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuczFAb3Zlcmxvb2submV0IiwiaWQiOiI2NDAwODVlYWI5OGJmYTY1ZDY2Y2RlNTQiLCJpYXQiOjE2Nzc3NTk2NzAsImV4cCI6MTY3NzkzMjQ3MH0.HCAvUZgtI61A1AdqIiZyrbXpbJoJBGziwH35T3FI014
 Content-Type: application/json
 
 {

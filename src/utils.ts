@@ -2,6 +2,7 @@ import { OfferType } from './types/offer.js';
 import crypto from 'crypto';
 import { ClassConstructor, plainToInstance } from 'class-transformer';
 import { Benefits, CitiesNames, RoomType } from './const.js';
+import * as jose from 'jose';
 
 const trueOrFalse = (str: string) => str !== 'false';
 
@@ -69,3 +70,10 @@ export const createErrorObject = (message: string) => ({
 
 export const fillDTO = <T, V>(someDto: ClassConstructor<T>, plainObject: V) =>
   plainToInstance(someDto, plainObject, {excludeExtraneousValues: true});
+
+export const createJWT = async (algoritm: string, jwtSecret: string, payload: object): Promise<string> =>
+  new jose.SignJWT({...payload})
+    .setProtectedHeader({ alg: algoritm})
+    .setIssuedAt()
+    .setExpirationTime('2d')
+    .sign(crypto.createSecretKey(jwtSecret, 'utf-8'));

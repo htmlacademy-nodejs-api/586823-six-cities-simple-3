@@ -117,5 +117,5 @@ DB_HOST=127.0.0.1 - Адрес хоста
 DB_USER=admin - Имя пользователя для бзы данных
 DB_PASSWORD=test - Пароль для пользователя базы данных
 UPLOAD_DIRECTORY=upload - Папка со статикой
-JWT_SECRET=test - Строка для создания токена
+JWT_SECRET=penguin-can-fly - Строка для создания токена
 ```

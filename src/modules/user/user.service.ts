@@ -7,6 +7,7 @@ import {LoggerInterface} from '../../common/logger/logger.interface.js';
 import {Component} from '../../types/component.types.js';
 import { inject, injectable } from 'inversify';
 import { types } from '@typegoose/typegoose';
+import LoginUserDto from './dto/login-user.dto.js';
 
  @injectable()
 export default class UserService implements UserServiceInterface {

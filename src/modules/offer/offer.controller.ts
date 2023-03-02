@@ -16,6 +16,7 @@ import { CommentServiceInterface } from '../comments/comment-service.interface.j
 import CommentResponse from '../comments/responce/comment.responce.js';
 import { ValidateObjectIdMiddleware } from '../../common/middlewares/validate-objectid.middleware.js';
 import { ValidateDtoMiddleware } from '../../common/middlewares/validate-dto.middleware.js';
+import { PrivateRouteMiddleware } from '../../common/middlewares/private-route.middleware.js';
 
 type ParamsGetOffer = {
   offerId: string;
@@ -37,7 +38,9 @@ export default class OfferController extends Controller {
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateOfferDto)]
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateDtoMiddleware(CreateOfferDto)]
     });
     this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
     this.addRoute({
@@ -50,13 +53,17 @@ export default class OfferController extends Controller {
       path: '/:offerId',
       method: HttpMethod.Delete,
       handler: this.delete,
-      middlewares: [new ValidateObjectIdMiddleware('offerId')]
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId')]
     });
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Patch,
       handler: this.update,
-      middlewares: [new ValidateObjectIdMiddleware('offerId')]
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId')]
     });
     this.addRoute({
       path: '/:offerId/comments',
@@ -71,7 +78,7 @@ export default class OfferController extends Controller {
     res: Response
   ): Promise<void> {
     const {body} = req;
-    const result = await this.offerService.create(body);
+    const result = await this.offerService.create({...body, userId: req.user.id});
 
     const offer = await this.offerService.findById(result.id);
     this.created(res, fillDTO(OfferResponse, offer));
